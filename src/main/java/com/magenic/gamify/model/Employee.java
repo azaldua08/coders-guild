@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="employee")
@@ -26,6 +28,8 @@ public class Employee implements Serializable, Comparable<Employee>{
 	
 	private String name;
 	private String username;
+	@JsonIgnore
+	private String password;
 	private String jobClass;
 	private String guild;
 	private int level;
@@ -33,6 +37,8 @@ public class Employee implements Serializable, Comparable<Employee>{
 	private Date joinDate;
 	private String status;
 	private String avatar;
+	@JsonIgnore
+	private String roles;
 	
 	private Set<Skill> skills;
 	private Set<Trophy> trophies;
@@ -64,6 +70,14 @@ public class Employee implements Serializable, Comparable<Employee>{
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	@Column(name="class")
@@ -121,6 +135,14 @@ public class Employee implements Serializable, Comparable<Employee>{
 	}
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+	
+	@Column(name="role")
+	public String getRoles() {
+		return roles;
+	}
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 	
 	@OneToMany(mappedBy="employee", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
