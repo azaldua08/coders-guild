@@ -33,6 +33,12 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 	public Optional<Employee> retrieveEmployeeById(Long id) {
 		return employeeRepository.findById(id);
 	}
+	
+	@Transactional
+	@Override
+	public Optional<Employee> retrieveEmployeeByUsername(String username) {
+		return employeeRepository.findEmployeeByUsername(username);
+	}
 
 	@Transactional
 	@Override

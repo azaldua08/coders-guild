@@ -10,6 +10,7 @@ public interface EmployeeDetailsService {
 	public Set<Employee> retrieveTopEmployeesByLevel();
 	public SortedSet<Employee> retrieveTopEmployeesByBadges();
 	public Optional<Employee> retrieveEmployeeById(Long id);
+	public Optional<Employee> retrieveEmployeeByUsername(String username);
 	public Employee createEmployee(Employee employee);
 	public void updateEmployee(Employee employee);
 	public void deleteEmployeeById(Long id);
