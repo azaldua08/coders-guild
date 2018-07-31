@@ -41,7 +41,7 @@ public class EmployeeDetailsController {
 		return employeeDetailsService.retrieveTopEmployeesByBadges();
 	}
 	
-	@GetMapping("/employee/{username}")
+	@GetMapping("/employeebyusername/{username}")
 	public Employee displayEmployeeByUsername(@PathVariable String username) {
 		return employeeDetailsService.retrieveEmployeeByUsername(username).get();
 	}
