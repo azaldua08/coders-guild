@@ -37,7 +37,6 @@ public class Employee implements Serializable, Comparable<Employee>{
 	private Date joinDate;
 	private String status;
 	private String avatar;
-	@JsonIgnore
 	private String roles;
 	
 	private Set<Skill> skills;
