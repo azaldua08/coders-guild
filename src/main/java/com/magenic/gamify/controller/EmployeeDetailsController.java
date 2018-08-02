@@ -43,7 +43,7 @@ public class EmployeeDetailsController {
 	
 	@GetMapping("/employeebyusername/{username}")
 	public Employee displayEmployeeByUsername(@PathVariable String username) {
-		return employeeDetailsService.retrieveEmployeeByUsername(username).get();
+		return employeeDetailsService.retrieveEmployeeByUsername(username);
 	}
 	
 	@GetMapping("/employee/{id}")

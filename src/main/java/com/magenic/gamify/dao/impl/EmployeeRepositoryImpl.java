@@ -92,5 +92,18 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom{
 		return result;
 	}
 
+	@Override
+	public Employee findEmployeeByUsername(String username) {
+		// TODO Auto-generated method stub
+		EntityManager em = entityManager();
+		Session session = em.unwrap(Session.class);
+		
+		Employee result = (Employee) session.createQuery("select e from Employee e left outer join fetch e.skills s "
+				+ "left outer join fetch e.trophies t " + "left outer join fetch e.badges b " + "where e.username = :username")
+		.setParameter("username", username)
+		.list().get(0);
+		return result;
+	}
+
 
 }

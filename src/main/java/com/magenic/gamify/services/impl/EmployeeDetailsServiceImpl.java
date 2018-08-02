@@ -36,7 +36,7 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 	
 	@Transactional
 	@Override
-	public Optional<Employee> retrieveEmployeeByUsername(String username) {
+	public Employee retrieveEmployeeByUsername(String username) {
 		return employeeRepository.findEmployeeByUsername(username);
 	}
 

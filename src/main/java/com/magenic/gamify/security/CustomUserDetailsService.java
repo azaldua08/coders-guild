@@ -23,9 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		UserBuilder builder = null;
-		Optional<Employee> employeeOptional = employeeRepository.findEmployeeByUsername(username);
-		if(employeeOptional.isPresent()) {
-			Employee employee = employeeOptional.get();
+		Employee employee = employeeRepository.findEmployeeByUsername(username);
+		if(employee != null) {
 			builder = User.withUsername(username)
 					.password(new BCryptPasswordEncoder().encode(employee.getPassword()))
 					.roles(employee.getRoles());
