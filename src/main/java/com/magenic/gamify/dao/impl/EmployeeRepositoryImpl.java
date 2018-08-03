@@ -1,7 +1,9 @@
 package com.magenic.gamify.dao.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -27,6 +29,12 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom{
 	@Autowired
 	private EntityManagerFactory emf;
 	
+	/*
+	 * [Issue]: Unable to select specific fields when fetching entity.
+	 * Solution: This is the current way of selecting specific fields in Hibernate.
+	 * Projections and the old Criteria API was already deprecated in the latest Hibernate.
+	 * Consider using static meta references for type-safety.
+	 * For a pure JPA implementation, consider using Specification class*/
 	@SuppressWarnings("deprecation")
 	@Override
 	public SortedSet<Employee> findTop15EmployeesOrderByBadges() {
@@ -72,6 +80,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom{
 					
 				})
 				.setMaxResults(15).getResultList();
+		
+		//We use SortedSet for results which we expect to be sorted. This is needed even if your HQL/SQL has ORDER BY!!
 		SortedSet<Employee> result = new TreeSet<Employee>(tupleResult);
 		return result;
 	}
@@ -98,10 +108,21 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom{
 		EntityManager em = entityManager();
 		Session session = em.unwrap(Session.class);
 		
-		Employee result = (Employee) session.createQuery("select e from Employee e left outer join fetch e.skills s "
-				+ "left outer join fetch e.trophies t " + "left outer join fetch e.badges b " + "where e.username = :username")
+		Employee result = (Employee) session.createQuery("select e from Employee e  where e.username = :username")
 		.setParameter("username", username)
 		.list().get(0);
+		return result;
+	}
+
+	@Override
+	public Set<Employee> findTop15ByOrderByLevelDesc() {
+		// TODO Auto-generated method stub
+		EntityManager em = entityManager();
+		Session session = em.unwrap(Session.class);
+		
+		List<Employee> employees = session.createQuery("select e from Employee e order by e.level desc")
+		.list();
+		Set<Employee> result = new HashSet<Employee>(employees);
 		return result;
 	}
 

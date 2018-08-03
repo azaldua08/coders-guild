@@ -21,6 +21,9 @@ public class Skill implements Serializable{
 	private String name;
 	private int level;
 	
+
+	private Long employeeId;
+	
 	private Employee employee;
 
 	@Id
@@ -62,6 +65,16 @@ public class Skill implements Serializable{
 		this.employee = employee;
 	}
 	
+	/*[NPE-DES]*/
+	@Column(name="employee_id", insertable=false, updatable=false)
+	public Long getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
+	}
+
 	@Override
 	public String toString() {
 		return "id = " + id + ", name = " + name + ", level = " + level + ", employee = " + employee.getName();
@@ -79,7 +92,7 @@ public class Skill implements Serializable{
 		
 		return skill.name.equals(this.name) &&
 				skill.level == this.level &&
-				skill.employee.getId() == this.employee.getId();
+				skill.employeeId == this.employeeId;
 	}
 	
 	@Override
@@ -87,7 +100,7 @@ public class Skill implements Serializable{
 		int result = 17;
 		result = 31 * result + this.name.hashCode();
 		result = 31 * result + this.level;
-		result = 31 * result + this.employee.getId().intValue();
+		result = 31 * result + this.employeeId.intValue();
 		
 		return result;
 	}

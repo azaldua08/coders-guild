@@ -21,6 +21,9 @@ public class Trophy implements Serializable{
 	private String name;
 	private Employee employee;
 	
+
+	private Long employeeId;
+	
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -48,6 +51,16 @@ public class Trophy implements Serializable{
 		this.employee = employee;
 	}
 	
+	/*[NPE-DES]*/
+	@Column(name="employee_id", insertable=false, updatable=false)
+	public Long getEmployeeId() {
+		return employeeId;
+	}
+	
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
@@ -59,14 +72,14 @@ public class Trophy implements Serializable{
 		Trophy trophy = (Trophy) o;
 		
 		return trophy.name.equals(this.name) &&
-				trophy.employee.getId() == this.employee.getId();
+				trophy.employeeId == this.employeeId;
 	}
 	
 	@Override
 	public int hashCode() {
 		int result = 17;
 		result = 31 * result + this.name.hashCode();
-		result = 31 * result + this.employee.getId().intValue();
+		result = 31 * result + this.employeeId.intValue();
 		
 		return result;
 	}

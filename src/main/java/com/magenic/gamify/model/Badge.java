@@ -21,6 +21,9 @@ public class Badge implements Serializable {
 
 	private Long id;
 	
+	
+	private Long employeeId;
+	
 	private String name;
 	@JsonProperty(access=Access.WRITE_ONLY)
 	private Employee employee;
@@ -52,6 +55,21 @@ public class Badge implements Serializable {
 		this.employee = employee;
 	}
 	
+	/*[NPE-DES]*/
+	@Column(name="employee_id", insertable=false, updatable=false)
+	public Long getEmployeeId() {
+		return employeeId;
+	}
+	
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
+	}
+	
+	/*[Issue-NPE-DES]: Deserialization of the child entity e.g badge during update is causing NPE
+	 * This is because the parent entity employee cannot be deserialized. It's null. The below methods
+	 * Will throw NPE when called during update. 
+	 * Use Alternative described here:
+	 * https://stackoverflow.com/questions/5741750/implementing-equals-hashcode-using-a-referenced-manytoone-entity */
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
@@ -63,14 +81,14 @@ public class Badge implements Serializable {
 		Badge badge = (Badge) o;
 		
 		return badge.name.equals(this.name) &&
-				badge.employee.getId() == this.employee.getId();
+				badge.employeeId == this.employeeId;
 	}
 	
 	@Override
 	public int hashCode() {
 		int result = 17;
 		result = 31 * result + this.name.hashCode();
-		result = 31 * result + this.employee.getId().intValue();
+		result = 31 * result + this.employeeId.intValue();
 		
 		return result;
 	}

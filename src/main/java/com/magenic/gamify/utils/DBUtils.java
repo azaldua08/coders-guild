@@ -7,6 +7,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+/*
+ * This is a class that lets you update only the changed fields in your entity.
+ * It works by iterating each property of the bean and ignores those whose values
+ * are either null or 0*/
+
 public class DBUtils {
 	public static void copyNonNullProperties(Object src, Object target) {
 	    BeanUtils.copyProperties(src, target, getNullPropertyNames(src));

@@ -144,13 +144,23 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.roles = roles;
 	}
 	
+	/*
+	 * [Issue]: A collection with cascade=“all-delete-orphan” was no longer referenced by the owning entity instance
+	 * Solutions: 
+	 * https://stackoverflow.com/questions/9430640/a-collection-with-cascade-all-delete-orphan-was-no-longer-referenced-by-the-ow
+	 * https://stackoverflow.com/questions/24266134/cascade-all-delete-orphan-was-no-longer-referenced
+	 * */
 	@OneToMany(mappedBy="employee", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
 	public Set<Skill> getSkills() {
 		return skills;
 	}
 	public void setSkills(Set<Skill> skills) {
 		if(this.skills != null) {
-			this.skills.clear();
+			// Added this to prevent the child entity from being deleted during update.
+			// This is because the Set will usually have the same reference
+			if(this.skills != skills) {
+				this.skills.clear();
+			}
 			this.skills.addAll(skills);
 		}
 		else {
@@ -164,7 +174,9 @@ public class Employee implements Serializable, Comparable<Employee>{
 	}
 	public void setTrophies(Set<Trophy> trophies) {
 		if(this.trophies != null) {
-			this.trophies.clear();
+			if(this.trophies != trophies) {
+				this.trophies.clear();
+			}
 			this.trophies.addAll(trophies);
 		}
 		else {
@@ -179,7 +191,9 @@ public class Employee implements Serializable, Comparable<Employee>{
 	
 	public void setBadges(Set<Badge> badges) {
 		if(this.badges != null) {
-			this.badges.clear();
+			if(this.badges != badges) {
+				this.badges.clear();
+			}
 			this.badges.addAll(badges);
 		}
 		else {
@@ -198,6 +212,8 @@ public class Employee implements Serializable, Comparable<Employee>{
 		return "id = " + id + ", name = " + name + ", username = " + username + ", class = " + jobClass + ", guild = " + guild
 				+ ", level = " + level + ", xp = " + experience + ", status = " + status;
 	}
+	
+	//Need to implement this if we use SortedSet
 	@Override
 	public int compareTo(Employee o) {
 		// TODO Auto-generated method stub

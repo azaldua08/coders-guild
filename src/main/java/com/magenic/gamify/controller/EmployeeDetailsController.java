@@ -8,7 +8,6 @@ import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,11 +89,17 @@ public class EmployeeDetailsController {
 		if(existingEmployee == null) {
 			return ResponseEntity.notFound().build();
 		}
+		
+		/*
+		 * [Issue]: JPA/Hibernate sets all fields including unchanged ones. See DBUtils.
+		 * Reference: https://stackoverflow.com/questions/27818334/jpa-update-only-specific-fields/27862208
+		 * */
+		
 		DBUtils.copyNonNullProperties(employee, existingEmployee.get());
-		//employee.setId(id);
+		
 		employeeDetailsService.updateEmployee(existingEmployee.get());
 		
-		return ResponseEntity.ok(employee);
+		return ResponseEntity.ok(existingEmployee.get());
 	}
 	
 	/* DELETE Methods */
