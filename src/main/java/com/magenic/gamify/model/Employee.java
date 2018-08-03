@@ -39,8 +39,11 @@ public class Employee implements Serializable, Comparable<Employee>{
 	private String avatar;
 	private String roles;
 	
+	@JsonIgnore
 	private Set<Skill> skills;
+	@JsonIgnore
 	private Set<Trophy> trophies;
+	@JsonIgnore
 	private Set<Badge> badges;
 	
 	private Long numberOfBadges;

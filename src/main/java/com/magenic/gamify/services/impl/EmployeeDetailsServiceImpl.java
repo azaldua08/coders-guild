@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.magenic.gamify.dao.EmployeeRepository;
+import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
 import com.magenic.gamify.services.EmployeeDetailsService;
 
@@ -59,5 +60,11 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 	public void deleteEmployeeById(Long id) {
 		// TODO Auto-generated method stub
 		employeeRepository.deleteById(id);
+	}
+
+	@Override
+	public Set<Badge> retrieveBadgesOfEmployee(Long employeeId) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findBadgesByEmployeeId(employeeId);
 	}
 }

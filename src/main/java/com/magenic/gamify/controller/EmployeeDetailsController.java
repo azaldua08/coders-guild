@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
 import com.magenic.gamify.services.EmployeeDetailsService;
 import com.magenic.gamify.utils.DBUtils;
@@ -49,6 +50,13 @@ public class EmployeeDetailsController {
 	@GetMapping("/employee/{id}")
 	public Employee displayEmployeeById(@PathVariable Long id) {
 		return employeeDetailsService.retrieveEmployeeById(id).get();
+		
+	}
+	
+	@GetMapping("/employeebadges/{id}")
+	public Set<Badge> displayEmployeeBadges(@PathVariable Long id) {
+		Set<Badge> b = employeeDetailsService.retrieveBadgesOfEmployee(id);
+		return b;
 		
 	}
 	

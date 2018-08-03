@@ -108,21 +108,23 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom{
 		EntityManager em = entityManager();
 		Session session = em.unwrap(Session.class);
 		
-		Employee result = (Employee) session.createQuery("select e from Employee e  where e.username = :username")
+		Employee result = (Employee) session.createQuery("select e from Employee e where e.username = :username")
 		.setParameter("username", username)
 		.list().get(0);
 		return result;
 	}
 
 	@Override
-	public Set<Employee> findTop15ByOrderByLevelDesc() {
+	public Set<Badge> findBadgesByEmployeeId(Long employeeId) {
 		// TODO Auto-generated method stub
 		EntityManager em = entityManager();
 		Session session = em.unwrap(Session.class);
 		
-		List<Employee> employees = session.createQuery("select e from Employee e order by e.level desc")
+		List<Badge> badges = session.createQuery("select b from Badge b inner join fetch b.employee e "
+				+ "where b.employeeId = :employeeId")
+		.setParameter("employeeId", employeeId)
 		.list();
-		Set<Employee> result = new HashSet<Employee>(employees);
+		Set<Badge> result = new HashSet<Badge>(badges);
 		return result;
 	}
 

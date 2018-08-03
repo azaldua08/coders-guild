@@ -25,7 +25,7 @@ public class Badge implements Serializable {
 	private Long employeeId;
 	
 	private String name;
-	@JsonProperty(access=Access.WRITE_ONLY)
+	
 	private Employee employee;
 	
 	@Id
