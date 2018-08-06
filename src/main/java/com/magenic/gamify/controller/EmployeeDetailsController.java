@@ -20,6 +20,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
+import com.magenic.gamify.model.Skill;
+import com.magenic.gamify.model.Trophy;
 import com.magenic.gamify.services.EmployeeDetailsService;
 import com.magenic.gamify.utils.DBUtils;
 
@@ -57,6 +59,20 @@ public class EmployeeDetailsController {
 	public Set<Badge> displayEmployeeBadges(@PathVariable Long id) {
 		Set<Badge> b = employeeDetailsService.retrieveBadgesOfEmployee(id);
 		return b;
+		
+	}
+	
+	@GetMapping("/employeeskills/{id}")
+	public Set<Skill> displayEmployeeSkills(@PathVariable Long id) {
+		Set<Skill> s = employeeDetailsService.retrieveSkillsOfEmployee(id);
+		return s;
+		
+	}
+	
+	@GetMapping("/employeetrophies/{id}")
+	public Set<Trophy> displayEmployeeTrophies(@PathVariable Long id) {
+		Set<Trophy> t = employeeDetailsService.retrieveTrophiesOfEmployee(id);
+		return t;
 		
 	}
 	

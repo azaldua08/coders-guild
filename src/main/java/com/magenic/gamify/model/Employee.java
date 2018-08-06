@@ -220,7 +220,12 @@ public class Employee implements Serializable, Comparable<Employee>{
 	@Override
 	public int compareTo(Employee o) {
 		// TODO Auto-generated method stub
-		return o.numberOfBadges.compareTo(this.numberOfBadges);
+		int badgeComp = o.numberOfBadges.compareTo(this.numberOfBadges);
+		if(badgeComp != 0) {
+			return badgeComp;
+		}
+		
+		return this.name.compareTo(o.name);
 	}
 	
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.magenic.gamify.dao.EmployeeRepository;
 import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
+import com.magenic.gamify.model.Skill;
+import com.magenic.gamify.model.Trophy;
 import com.magenic.gamify.services.EmployeeDetailsService;
 
 @Service
@@ -62,9 +64,24 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		employeeRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public Set<Badge> retrieveBadgesOfEmployee(Long employeeId) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findBadgesByEmployeeId(employeeId);
+	}
+	
+	@Transactional
+	@Override
+	public Set<Skill> retrieveSkillsOfEmployee(Long employeeId) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findSkillsByEmployeeId(employeeId);
+	}
+	
+	@Transactional
+	@Override
+	public Set<Trophy> retrieveTrophiesOfEmployee(Long employeeId) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findTrophiesByEmployeeId(employeeId);
 	}
 }

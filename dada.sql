@@ -1,0 +1,1 @@
+select e.name,e.username,e.join_date,e.status,e.guild,e.class,e.avatar,count(b.id)  from employee as e inner join badge b on e.id=b.employee_id group by e.name order by count(b.id) desc limit 15

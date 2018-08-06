@@ -6,6 +6,8 @@ import java.util.SortedSet;
 
 import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
+import com.magenic.gamify.model.Skill;
+import com.magenic.gamify.model.Trophy;
 
 public interface EmployeeDetailsService {
 	public Set<Employee> retrieveTopEmployeesByLevel();
@@ -16,4 +18,6 @@ public interface EmployeeDetailsService {
 	public void updateEmployee(Employee employee);
 	public void deleteEmployeeById(Long id);
 	public Set<Badge> retrieveBadgesOfEmployee(Long employeeId);
+	public Set<Skill> retrieveSkillsOfEmployee(Long employeeId);
+	public Set<Trophy> retrieveTrophiesOfEmployee(Long employeeId);
 }
