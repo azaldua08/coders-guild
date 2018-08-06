@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.magenic.gamify.dao.EmployeeRepository;
+import com.magenic.gamify.dao.SkillRepository;
 import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
 import com.magenic.gamify.model.Skill;
@@ -20,6 +21,9 @@ import com.magenic.gamify.services.EmployeeDetailsService;
 public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private SkillRepository skillRepository;
 	
 	@Transactional
 	public Set<Employee> retrieveTopEmployeesByLevel(){
@@ -83,5 +87,12 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 	public Set<Trophy> retrieveTrophiesOfEmployee(Long employeeId) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findTrophiesByEmployeeId(employeeId);
+	}
+
+	@Transactional
+	@Override
+	public Skill createSkill(Skill skill) {
+		// TODO Auto-generated method stub
+		return skillRepository.save(skill);
 	}
 }
