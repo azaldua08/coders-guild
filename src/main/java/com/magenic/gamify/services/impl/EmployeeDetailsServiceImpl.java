@@ -67,6 +67,13 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		// TODO Auto-generated method stub
 		employeeRepository.deleteById(id);
 	}
+	
+	@Transactional
+	@Override
+	public void deleteSkillById(Long id) {
+		// TODO Auto-generated method stub
+		skillRepository.deleteById(id);
+	}
 
 	@Transactional
 	@Override

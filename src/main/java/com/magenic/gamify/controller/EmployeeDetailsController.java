@@ -151,4 +151,9 @@ public class EmployeeDetailsController {
 	public void deleteEmployee(@PathVariable Long id) {
 		employeeDetailsService.deleteEmployeeById(id);
 	}
+	
+	@DeleteMapping("/employeeskill/{id}")
+	public void deleteSkill(@PathVariable Long id) {
+		employeeDetailsService.deleteSkillById(id);
+	}
 }

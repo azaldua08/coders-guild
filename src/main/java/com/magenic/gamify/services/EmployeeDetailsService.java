@@ -21,4 +21,5 @@ public interface EmployeeDetailsService {
 	public Set<Badge> retrieveBadgesOfEmployee(Long employeeId);
 	public Set<Skill> retrieveSkillsOfEmployee(Long employeeId);
 	public Set<Trophy> retrieveTrophiesOfEmployee(Long employeeId);
+	public void deleteSkillById(Long id);
 }
