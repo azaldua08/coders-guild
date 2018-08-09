@@ -95,14 +95,14 @@ public class EmployeeDetailsController {
 		if (existingEmployee == null) {
 			return ResponseEntity.notFound().build();
 		}
-		skill.setEmployee(existingEmployee.get());
 		
+		skill.setEmployee(existingEmployee.get());
 		Skill createdSkill = employeeDetailsService.createSkill(skill);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(createdSkill.getId()).toUri();
 
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(createdSkill);
 	}
 
 	@PostMapping("/employee/addbatch")
