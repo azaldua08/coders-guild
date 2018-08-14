@@ -38,9 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable()
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST)
+        .antMatchers("/api/employee/add**")
         .hasRole("ADMIN")
-        .antMatchers(HttpMethod.DELETE)
+        .antMatchers(HttpMethod.DELETE, "/api/employee/**")
         .hasRole("ADMIN")
         .anyRequest().authenticated()
         .and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint());

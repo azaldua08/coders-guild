@@ -85,7 +85,7 @@ public class EmployeeDetailsController {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(createdEmployee.getId()).toUri();
 
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(createdEmployee);
 	}
 
 	@PostMapping("/employeeskill/add/{id}")
@@ -115,7 +115,7 @@ public class EmployeeDetailsController {
 				location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 						.buildAndExpand(createdEmployee.getId()).toUri();
 			}
-			return ResponseEntity.created(location).build();
+			return ResponseEntity.ok().body(employees);
 
 		}
 		return ResponseEntity.noContent().build();
