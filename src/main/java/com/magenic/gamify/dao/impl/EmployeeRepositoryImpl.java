@@ -50,7 +50,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 		Root<Employee> emp = crit.from(Employee.class);
 		Join<Employee, Badge> badges = emp.join("badges");
 		crit.multiselect(emp.get("name"), emp.get("username"), emp.get("joinDate"), emp.get("status"), emp.get("guild"),
-				emp.get("jobClass"), emp.get("avatar"), builder.count(badges));
+				emp.get("jobClass"), emp.get("avatar"), emp.get("email"), builder.count(badges));
 		crit.groupBy(emp.get("name"));
 		crit.orderBy(builder.desc(builder.count(badges)));
 
@@ -70,7 +70,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 						emp.setGuild((String) tuple[4]);
 						emp.setJobClass((String) tuple[5]);
 						emp.setAvatar((String) tuple[6]);
-						emp.setNumberOfBadges((Long) tuple[7]);
+						emp.setEmail((String) tuple[7]);
+						emp.setNumberOfBadges((Long) tuple[8]);
 						return emp;
 					}
 

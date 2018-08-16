@@ -16,8 +16,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -28,8 +32,9 @@ public class Employee implements Serializable, Comparable<Employee>{
 	
 	private String name;
 	private String username;
-	@JsonIgnore
+	@JsonProperty(access=Access.WRITE_ONLY)
 	private String password;
+	private String email;
 	private String jobClass;
 	private String guild;
 	private int level;
@@ -58,6 +63,7 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.id = id;
 	}
 	
+	@NotNull
 	@Column(name="name")
 	public String getName() {
 		return name;
@@ -66,6 +72,7 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.name = name;
 	}
 	
+	@NotNull
 	@Column(name="username")
 	public String getUsername() {
 		return username;
@@ -74,12 +81,22 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.username = username;
 	}
 	
+	@NotNull
 	@Column(name="password")
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	@Email
+	@Column(name="email")
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@Column(name="class")
