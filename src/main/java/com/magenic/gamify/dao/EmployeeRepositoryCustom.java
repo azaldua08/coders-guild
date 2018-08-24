@@ -15,4 +15,5 @@ public interface EmployeeRepositoryCustom {
 	Set<Badge> findBadgesByEmployeeId(Long employeeId);
 	Set<Skill> findSkillsByEmployeeId(Long employeeId);
 	Set<Trophy> findTrophiesByEmployeeId(Long employeeId);
+	Set<Employee> findEmployeeByFilters(String name, String guild, String jobClass);
 }

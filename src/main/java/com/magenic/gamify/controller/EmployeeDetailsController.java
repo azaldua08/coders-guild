@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,6 +48,17 @@ public class EmployeeDetailsController {
 	@GetMapping("/employeebyusername/{username}")
 	public Employee displayEmployeeByUsername(@PathVariable String username) {
 		return employeeDetailsService.retrieveEmployeeByUsername(username);
+	}
+	
+	@GetMapping("/employeesbyguild/{guild}")
+	public Set<Employee> displayEmployeesByGuild(@PathVariable String guild) {
+		return employeeDetailsService.retrieveEmployeesByGuild(guild);
+	}
+	
+	@GetMapping("/employeesbyfilters")
+	public Set<Employee> displayEmployeesByFilters(@RequestParam String name, @RequestParam String guild,
+			@RequestParam String jobClass) {
+		return employeeDetailsService.retrieveEmployeesByFilters(name, guild, jobClass);
 	}
 
 	@GetMapping("/employee/{id}")

@@ -102,4 +102,17 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		// TODO Auto-generated method stub
 		return skillRepository.save(skill);
 	}
+
+	@Transactional
+	@Override
+	public Set<Employee> retrieveEmployeesByGuild(String guild) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findEmployeesByGuild(guild);
+	}
+
+	@Override
+	public Set<Employee> retrieveEmployeesByFilters(String name, String guild, String jobClass) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findEmployeeByFilters(name, guild, jobClass);
+	}
 }

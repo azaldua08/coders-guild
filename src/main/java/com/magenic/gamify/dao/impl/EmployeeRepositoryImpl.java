@@ -114,6 +114,44 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 				.setParameter("username", username).list().get(0);
 		return result;
 	}
+	
+	@Override
+	public Set<Employee> findEmployeeByFilters(String name, String guild, String jobClass) {
+		// TODO Auto-generated method stub
+		
+		EntityManager em = entityManager();
+		Session session = em.unwrap(Session.class);
+		
+		String [] argNames = {"name", "guild", "jobClass"};
+		String [] args = {name, guild, jobClass};
+		
+		//create query string
+		String queryStr = "select e from Employee e";
+		org.hibernate.query.Query query = null;
+		for(int i = 0; i < args.length; i++) {
+			if(args[i].length() > 0) {
+				if(!queryStr.contains("where")) {
+					queryStr = queryStr.concat(" where ");
+				}
+				else {
+					queryStr = queryStr.concat(" and ");
+				}
+				queryStr = queryStr.concat("e." + argNames[i] + " like :" + "args" + i);
+			}
+		}
+		query = session.createQuery(queryStr);
+		
+		//set the query parameters
+		for(int i = 0; i < args.length; i++) {
+			if(args[i].length() > 0) {
+				query = query.setParameter("args" + i, args[i] + "%");
+			}
+		}
+		
+		List<Employee> employees = query.list();
+		Set<Employee> result = new HashSet<Employee>(employees);
+		return result;
+	}
 
 	@Override
 	public Set<Badge> findBadgesByEmployeeId(Long employeeId) {
@@ -156,5 +194,6 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 		Set<Trophy> result = new HashSet<Trophy>(trophies);
 		return result;
 	}
+
 
 }

@@ -10,4 +10,5 @@ import com.magenic.gamify.model.Employee;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long>, EmployeeRepositoryCustom {
 	Set<Employee> findTop15ByOrderByLevelDesc();
+	Set<Employee> findEmployeesByGuild(String guild);
 }

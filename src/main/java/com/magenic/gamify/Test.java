@@ -46,6 +46,26 @@ public class Test {
 //		System.out.println(java2.toString());
 //		
 //		System.out.println(java.equals(java2));
+		filter("amiel","","Knight");
+	}
+	
+	public static void filter(String name, String guild, String jobClass) {
+		String [] argNames = {"name", "guild", "jobClass"};
+		String [] args = {name, guild, jobClass};
+		//System.out.println(args[0]);
+		String queryStr = "select e from Employee e";
+		for(int i = 0; i < args.length; i++) {
+			if(args[i].length() > 0) {
+				if(!queryStr.contains("where")) {
+					queryStr = queryStr.concat(" where ");
+				}
+				else {
+					queryStr = queryStr.concat(" and ");
+				}
+				queryStr = queryStr.concat("e." + argNames[i] + " = :" + "args" + i);
+			}
+		}
+		System.out.println(queryStr);
 	}
 
 }
