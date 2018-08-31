@@ -1,14 +1,24 @@
 package com.magenic.gamify.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
+import javax.persistence.RollbackException;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.magenic.gamify.model.Badge;
@@ -49,12 +60,12 @@ public class EmployeeDetailsController {
 	public Employee displayEmployeeByUsername(@PathVariable String username) {
 		return employeeDetailsService.retrieveEmployeeByUsername(username);
 	}
-	
+
 	@GetMapping("/employeesbyguild/{guild}")
 	public Set<Employee> displayEmployeesByGuild(@PathVariable String guild) {
 		return employeeDetailsService.retrieveEmployeesByGuild(guild);
 	}
-	
+
 	@GetMapping("/employeesbyfilters")
 	public Set<Employee> displayEmployeesByFilters(@RequestParam String name, @RequestParam String guild,
 			@RequestParam String jobClass) {
@@ -107,7 +118,7 @@ public class EmployeeDetailsController {
 		if (existingEmployee == null) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		skill.setEmployee(existingEmployee.get());
 		Skill createdSkill = employeeDetailsService.createSkill(skill);
 
@@ -118,7 +129,7 @@ public class EmployeeDetailsController {
 	}
 
 	@PostMapping("/employee/addbatch")
-	public ResponseEntity<Object> createEmployeeBatch(@RequestBody List<Employee> employees) {
+	public ResponseEntity<Object> createEmployeeBatch(@Valid @RequestBody List<Employee> employees) {
 		if (employees != null && employees.size() > 0) {
 			URI location = null;
 			for (Employee employee : employees) {
@@ -163,9 +174,21 @@ public class EmployeeDetailsController {
 	public void deleteEmployee(@PathVariable Long id) {
 		employeeDetailsService.deleteEmployeeById(id);
 	}
-	
+
 	@DeleteMapping("/employeeskill/{id}")
 	public void deleteSkill(@PathVariable Long id) {
 		employeeDetailsService.deleteSkillById(id);
+	}
+
+	@ExceptionHandler(value = { TransactionSystemException.class, RollbackException.class, 
+			ConstraintViolationException.class })
+	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+		ConstraintViolationException cex= (ConstraintViolationException) ex.getCause().getCause();
+		List<String> errors = new ArrayList<String>();
+		for(ConstraintViolation violation: cex.getConstraintViolations()) {
+			errors.add(violation.getRootBeanClass().getName() + " " + 
+			          violation.getPropertyPath() + ": " + violation.getMessage());
+		}
+		return new ResponseEntity(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 }
