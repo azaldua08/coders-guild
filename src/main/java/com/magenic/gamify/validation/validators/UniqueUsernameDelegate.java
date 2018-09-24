@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.magenic.gamify.validation.constraints.UniqueUsername;
 
+// https://blog.progs.be/510/custom-bean-validator-with-spring-framework-and-apiimplementation-barrier
 @Component
 public class UniqueUsernameDelegate implements ConstraintValidator<UniqueUsername, String>{
 
