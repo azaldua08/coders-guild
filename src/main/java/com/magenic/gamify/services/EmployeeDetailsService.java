@@ -1,5 +1,6 @@
 package com.magenic.gamify.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
@@ -17,6 +18,8 @@ public interface EmployeeDetailsService {
 	public Set<Employee> retrieveEmployeesByGuild(String guild);
 	public Set<Employee> retrieveEmployeesByFilters(String name, String guild, String jobClass);
 	public Employee createEmployee(Employee employee);
+	//public Set<Employee> batch(List<Employee> employees);
+	public Set<Employee> createEmployeeBatch(List<Employee> employees);
 	public Skill createSkill(Skill skill);
 	public void updateEmployee(Employee employee);
 	public void deleteEmployeeById(Long id);

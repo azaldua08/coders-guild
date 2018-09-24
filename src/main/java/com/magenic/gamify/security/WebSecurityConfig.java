@@ -64,6 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          // will fail with 403 Invalid CORS request
          configuration.setAllowedHeaders(Collections.unmodifiableList(Arrays
         		 .asList("Authorization", "Cache-Control", "Content-Type")));
+         // https://stackoverflow.com/questions/51971342/cant-get-headers-of-response-in-angular-5
+         configuration.setExposedHeaders(Collections.unmodifiableList(Arrays
+        		 .asList("partiallyCreated")));
         UrlBasedCorsConfigurationSource source = new
                 UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

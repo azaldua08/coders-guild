@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import javax.persistence.RollbackException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -27,9 +28,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.magenic.gamify.exceptions.RequestContext;
 import com.magenic.gamify.model.Badge;
 import com.magenic.gamify.model.Employee;
 import com.magenic.gamify.model.Skill;
@@ -42,7 +43,11 @@ import com.magenic.gamify.utils.DBUtils;
 public class EmployeeDetailsController {
 
 	@Autowired
-	EmployeeDetailsService employeeDetailsService;
+	private EmployeeDetailsService employeeDetailsService;
+	
+	// https://stackoverflow.com/questions/43502332/how-to-get-the-requestbody-in-an-exceptionhandler-spring-rest
+	@Autowired
+    private RequestContext requestContext;
 
 	/* GET Methods */
 
@@ -129,16 +134,11 @@ public class EmployeeDetailsController {
 	}
 
 	@PostMapping("/employee/addbatch")
-	public ResponseEntity<Object> createEmployeeBatch(@Valid @RequestBody List<Employee> employees) {
+	public ResponseEntity<Object> createEmployeeBatch(@RequestBody List<Employee> employees) {
+		requestContext.setRequestBody(employees);
 		if (employees != null && employees.size() > 0) {
-			URI location = null;
-			for (Employee employee : employees) {
-				Employee createdEmployee = employeeDetailsService.createEmployee(employee);
-
-				location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-						.buildAndExpand(createdEmployee.getId()).toUri();
-			}
-			return ResponseEntity.ok().body(employees);
+			Set<Employee> createdEmployees = employeeDetailsService.createEmployeeBatch(employees);
+			return ResponseEntity.ok().body(createdEmployees);
 
 		}
 		return ResponseEntity.noContent().build();
@@ -182,13 +182,24 @@ public class EmployeeDetailsController {
 
 	@ExceptionHandler(value = { TransactionSystemException.class, RollbackException.class, 
 			ConstraintViolationException.class })
-	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+	protected ResponseEntity<Object> handleConflict(RuntimeException ex, HttpServletRequest request) {
+		List requestBody = (List) requestContext.getRequestBody();
+		
 		ConstraintViolationException cex= (ConstraintViolationException) ex.getCause().getCause();
+		boolean partiallyCreated = false;
 		List<String> errors = new ArrayList<String>();
 		for(ConstraintViolation violation: cex.getConstraintViolations()) {
-			errors.add(violation.getRootBeanClass().getName() + " " + 
-			          violation.getPropertyPath() + ": " + violation.getMessage());
+			String rootBeanUsername = ((Employee)violation.getRootBean()).getUsername();
+			String firstUsername = ((Employee) requestBody.get(0)).getUsername();
+			partiallyCreated = !rootBeanUsername.equals(firstUsername);
+			
+			errors.add("Failed to create employee with username " + rootBeanUsername
+					+ " Error: "  + violation.getMessage());
 		}
-		return new ResponseEntity(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+		HttpHeaders headers = new HttpHeaders();
+		if (partiallyCreated) {
+			headers.add("partiallyCreated", "true");
+		}
+		return new ResponseEntity(errors, headers, HttpStatus.BAD_REQUEST);
 	}
 }

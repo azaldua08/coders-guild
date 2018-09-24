@@ -4,8 +4,10 @@ import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -55,6 +59,7 @@ public class CodersGuildApplication {
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
+		// transactionManager.setRollbackOnCommitFailure(true);
 
 		return transactionManager;
 	}
@@ -70,10 +75,43 @@ public class CodersGuildApplication {
 				setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
 				setProperty("hibernate.dialect", env.getProperty("spring.jpa.properties.hibernate.dialect"));
 				setProperty("hibernate.show_sql", "true");
+
+				// setProperty("javax.persistence.validation.group.pre-persist",
+				// "javax.validation.group.Default");
 			}
 		};
 	}
-	
+
+	@Bean
+	public Validator validator() {
+		return new LocalValidatorFactoryBean();
+	}
+
+//	@Bean
+//	public BeanValidationPostProcessor BeanValidationPostProcessor(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+//		final BeanValidationPostProcessor beanValidationPostProcessor = new BeanValidationPostProcessor();
+//		beanValidationPostProcessor.setValidator(validator(autowireCapableBeanFactory));
+//		return beanValidationPostProcessor;
+//	}
+//
+//	@Bean
+//	public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+//
+//		ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure()
+//				.constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
+//				.buildValidatorFactory();
+//		Validator validator = validatorFactory.getValidator();
+//
+//		return validator;
+//	}
+
+
+	@Bean
+	public MethodValidationPostProcessor methodValidationPostProcessor(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
+		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
+		methodValidationPostProcessor.setValidator(validator());
+		return methodValidationPostProcessor;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(CodersGuildApplication.class, args);

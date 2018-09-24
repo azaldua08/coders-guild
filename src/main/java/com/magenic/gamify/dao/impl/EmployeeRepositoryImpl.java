@@ -109,9 +109,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 		// TODO Auto-generated method stub
 		EntityManager em = entityManager();
 		Session session = em.unwrap(Session.class);
-
-		Employee result = (Employee) session.createQuery("select e from Employee e where e.username = :username")
-				.setParameter("username", username).list().get(0);
+		Employee result = null;
+		List<Employee> results =  session.createQuery("select e from Employee e where e.username = :username")
+				.setParameter("username", username).list();
+		
+		if (results != null && results.size() > 0) {
+			result = results.get(0);
+		}
 		return result;
 	}
 	

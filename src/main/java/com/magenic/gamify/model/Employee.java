@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.magenic.gamify.validation.constraints.UniqueUsername;
 
 
 @Entity
@@ -72,6 +73,7 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.name = name;
 	}
 	
+	@UniqueUsername
 	@NotNull
 	@Column(name="username")
 	public String getUsername() {

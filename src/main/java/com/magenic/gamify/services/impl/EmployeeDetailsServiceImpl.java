@@ -1,13 +1,17 @@
 package com.magenic.gamify.services.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.transaction.Transactional;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.magenic.gamify.dao.EmployeeRepository;
 import com.magenic.gamify.dao.SkillRepository;
@@ -18,30 +22,31 @@ import com.magenic.gamify.model.Trophy;
 import com.magenic.gamify.services.EmployeeDetailsService;
 
 @Service
-public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
+@Transactional
+public class EmployeeDetailsServiceImpl implements EmployeeDetailsService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
 	@Autowired
 	private SkillRepository skillRepository;
-	
-	@Transactional
-	public Set<Employee> retrieveTopEmployeesByLevel(){
+
+	@Transactional(readOnly = true)
+	public Set<Employee> retrieveTopEmployeesByLevel() {
 		return employeeRepository.findTop15ByOrderByLevelDesc();
 	}
-	
-	@Transactional
-	public SortedSet<Employee> retrieveTopEmployeesByBadges(){
+
+	@Transactional(readOnly = true)
+	public SortedSet<Employee> retrieveTopEmployeesByBadges() {
 		return employeeRepository.findTop15EmployeesOrderByBadges();
 	}
-	
-	@Transactional
+
+	@Transactional(readOnly = true)
 	@Override
 	public Optional<Employee> retrieveEmployeeById(Long id) {
 		return employeeRepository.findById(id);
 	}
-	
-	@Transactional
+
+	@Transactional(readOnly = true)
 	@Override
 	public Employee retrieveEmployeeByUsername(String username) {
 		return employeeRepository.findEmployeeByUsername(username);
@@ -67,7 +72,7 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		// TODO Auto-generated method stub
 		employeeRepository.deleteById(id);
 	}
-	
+
 	@Transactional
 	@Override
 	public void deleteSkillById(Long id) {
@@ -75,21 +80,21 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		skillRepository.deleteById(id);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public Set<Badge> retrieveBadgesOfEmployee(Long employeeId) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findBadgesByEmployeeId(employeeId);
 	}
-	
-	@Transactional
+
+	@Transactional(readOnly = true)
 	@Override
 	public Set<Skill> retrieveSkillsOfEmployee(Long employeeId) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findSkillsByEmployeeId(employeeId);
 	}
-	
-	@Transactional
+
+	@Transactional(readOnly = true)
 	@Override
 	public Set<Trophy> retrieveTrophiesOfEmployee(Long employeeId) {
 		// TODO Auto-generated method stub
@@ -103,16 +108,33 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService{
 		return skillRepository.save(skill);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public Set<Employee> retrieveEmployeesByGuild(String guild) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findEmployeesByGuild(guild);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Set<Employee> retrieveEmployeesByFilters(String name, String guild, String jobClass) {
 		// TODO Auto-generated method stub
 		return employeeRepository.findEmployeeByFilters(name, guild, jobClass);
+	}
+
+	@Transactional
+	@Override
+	public Set<Employee> createEmployeeBatch(List<Employee> employees) {
+		// TODO Auto-generated method stub
+		List<Employee> createdEmployees = new ArrayList<Employee>();
+		for (Employee employee : employees) {
+			Employee createdEmployee = employeeRepository.save(employee);
+
+			if (createdEmployee != null) {
+				createdEmployees.add(createdEmployee);
+			}
+		}
+		Set<Employee> result = new HashSet<Employee>(createdEmployees);
+		return result;
 	}
 }
