@@ -137,4 +137,11 @@ public class EmployeeDetailsServiceImpl implements EmployeeDetailsService {
 		Set<Employee> result = new HashSet<Employee>(createdEmployees);
 		return result;
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Employee retrieveEmployeeByEmail(String email) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findEmployeeByEmail(email);
+	}
 }

@@ -4,6 +4,7 @@ import javax.annotation.ManagedBean;
 
 import org.springframework.web.context.annotation.RequestScope;
 
+//https://stackoverflow.com/questions/43502332/how-to-get-the-requestbody-in-an-exceptionhandler-spring-rest
 @ManagedBean
 @RequestScope
 public class RequestContext {

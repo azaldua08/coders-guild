@@ -9,15 +9,14 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.magenic.gamify.validation.validators.UniqueUsernameDelegate;
+import com.magenic.gamify.validation.validators.UniqueEmailDelegate;
 
 @Documented
-@Constraint(validatedBy = UniqueUsernameDelegate.class)
+@Constraint(validatedBy = UniqueEmailDelegate.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueUsername {
-	
-	public String message() default "There is already a user with this username!";
+public @interface UniqueEmail {
+	public String message() default "Email address already in use!";
 	
 	public Class<?>[] groups() default {};
 

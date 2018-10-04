@@ -8,12 +8,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.magenic.gamify.services.EmployeeDetailsService;
-import com.magenic.gamify.validation.constraints.UniqueUsername;
+import com.magenic.gamify.validation.constraints.UniqueEmail;
 
 @Component
 @Scope("prototype")
-public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
-	
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
 	@Autowired
 	private EmployeeDetailsService employeeDetailsService;
@@ -21,7 +20,7 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		// TODO Auto-generated method stub
-		return value != null && employeeDetailsService.retrieveEmployeeByUsername(value) == null;
+		return value != null && employeeDetailsService.retrieveEmployeeByEmail(value) == null;
 	}
 
 }

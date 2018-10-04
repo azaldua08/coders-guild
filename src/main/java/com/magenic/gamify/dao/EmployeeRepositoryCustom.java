@@ -12,6 +12,7 @@ public interface EmployeeRepositoryCustom {
 	SortedSet<Employee> findTop15EmployeesOrderByBadges();
 	Employee findEmployeeById(Long id);
 	Employee findEmployeeByUsername(String username);
+	Employee findEmployeeByEmail(String email);
 	Set<Badge> findBadgesByEmployeeId(Long employeeId);
 	Set<Skill> findSkillsByEmployeeId(Long employeeId);
 	Set<Trophy> findTrophiesByEmployeeId(Long employeeId);

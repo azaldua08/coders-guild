@@ -199,5 +199,20 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 		return result;
 	}
 
+	@Override
+	public Employee findEmployeeByEmail(String email) {
+		// TODO Auto-generated method stub
+		EntityManager em = entityManager();
+		Session session = em.unwrap(Session.class);
+		Employee result = null;
+		List<Employee> results =  session.createQuery("select e from Employee e where e.email = :email")
+				.setParameter("email", email).list();
+		
+		if (results != null && results.size() > 0) {
+			result = results.get(0);
+		}
+		return result;
+	}
+
 
 }

@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.magenic.gamify.validation.constraints.UniqueEmail;
 import com.magenic.gamify.validation.constraints.UniqueUsername;
 
 
@@ -92,6 +93,7 @@ public class Employee implements Serializable, Comparable<Employee>{
 		this.password = password;
 	}
 	
+	@UniqueEmail
 	@Email
 	@Column(name="email")
 	public String getEmail() {

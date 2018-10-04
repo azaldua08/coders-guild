@@ -180,26 +180,4 @@ public class EmployeeDetailsController {
 		employeeDetailsService.deleteSkillById(id);
 	}
 
-	@ExceptionHandler(value = { TransactionSystemException.class, RollbackException.class, 
-			ConstraintViolationException.class })
-	protected ResponseEntity<Object> handleConflict(RuntimeException ex, HttpServletRequest request) {
-		List requestBody = (List) requestContext.getRequestBody();
-		
-		ConstraintViolationException cex= (ConstraintViolationException) ex.getCause().getCause();
-		boolean partiallyCreated = false;
-		List<String> errors = new ArrayList<String>();
-		for(ConstraintViolation violation: cex.getConstraintViolations()) {
-			String rootBeanUsername = ((Employee)violation.getRootBean()).getUsername();
-			String firstUsername = ((Employee) requestBody.get(0)).getUsername();
-			partiallyCreated = !rootBeanUsername.equals(firstUsername);
-			
-			errors.add("Failed to create employee with username " + rootBeanUsername
-					+ " Error: "  + violation.getMessage());
-		}
-		HttpHeaders headers = new HttpHeaders();
-		if (partiallyCreated) {
-			headers.add("partiallyCreated", "true");
-		}
-		return new ResponseEntity(errors, headers, HttpStatus.BAD_REQUEST);
-	}
 }

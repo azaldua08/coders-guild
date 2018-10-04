@@ -15,6 +15,7 @@ public interface EmployeeDetailsService {
 	public SortedSet<Employee> retrieveTopEmployeesByBadges();
 	public Optional<Employee> retrieveEmployeeById(Long id);
 	public Employee retrieveEmployeeByUsername(String username);
+	public Employee retrieveEmployeeByEmail(String email);
 	public Set<Employee> retrieveEmployeesByGuild(String guild);
 	public Set<Employee> retrieveEmployeesByFilters(String name, String guild, String jobClass);
 	public Employee createEmployee(Employee employee);
