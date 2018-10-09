@@ -50,12 +50,7 @@ public class Test {
 		// System.out.println(maxMirror(new int[] { 1, 2, 3, 8, 9, 3, 2, 1 }));
 		//System.out.println(maxSpan(new int[] { 2, 4, 2, 1, 8, 5, 2 }));
 		 //fix34(new int[] {3, 2, 3, 2, 4, 4 });
-		 StringBuilder s1 = new StringBuilder("Java");
-		 String s2 = "Love";
-		 s1.append(s2);
-		 s1.substring(4);
-		 int foundAt = s1.indexOf(s2);
-		System.out.println(foundAt);
+		
 	}
 
 //	public static void filter(String name, String guild, String jobClass) {
