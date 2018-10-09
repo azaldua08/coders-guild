@@ -339,5 +339,36 @@ each element of array A is an integer within the range [1..N + 1].*/
         int [] result = Arrays.stream(values).mapToInt(Integer::intValue).toArray();
         return result;
     }
+    
+    // better sol
+    public int[] solution6(int N, int[] A) {
+        // write your code in Java SE 8
+       
+       // init N counters as an array
+       int [] counters = new int [N];
+       for (int i = 0; i < N; i++) {
+           counters[i] = 0;
+       }
+       int count = 0, maxCount = 0;
+       //iterate array A of M length
+       for (int j = 0; j < A.length; j++) {
+           // if A[K] = X where X is between 1 and N
+           if (A[j] >= 1 && A[j] <= N) {
+            count = counters[A[j] - 1] +1;
+            counters[A[j]-1] = count;
+            if (count > maxCount) {
+                maxCount = count;
+            }
+           }
+           // A[K] is N + 1
+           else if (A[j] > N) {
+               for (int k = 1; k <= N; k++) {
+                   counters[k-1] = maxCount;
+               }               
+           }
+       }
+      
+       return counters;
+   }
 
 }
