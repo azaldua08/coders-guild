@@ -1,0 +1,2 @@
+insert into employee (id,username,status,role,password,name,level,join_date,class,guild,experience,email,avatar) 
+values (1,'azaldua','Active','ADMIN','user123','Amiel Zaldua',50, '2018-06-07','Knight','Knights Guild', 100, 'scarface08x@yahoo.com','https://bootdey.com/img/Content/avatar/avatar1.png')

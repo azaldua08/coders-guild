@@ -1,7 +1,6 @@
 package com.magenic.gamify;
 
-import com.magenic.gamify.model.Employee;
-import com.magenic.gamify.model.Skill;
+import java.util.Scanner;
 
 public class Test {
 
@@ -50,7 +49,26 @@ public class Test {
 		// System.out.println(maxMirror(new int[] { 1, 2, 3, 8, 9, 3, 2, 1 }));
 		//System.out.println(maxSpan(new int[] { 2, 4, 2, 1, 8, 5, 2 }));
 		 //fix34(new int[] {3, 2, 3, 2, 4, 4 });
+		Scanner sc = new Scanner(System.in);
 		
+		int len = sc.nextInt();
+		String out = "";
+
+		for (int x = len - 1; x >= 0; x--) {
+			out = String.valueOf(len - x) + out;
+			System.out.println(out);
+
+		}
+		//printNum(5,5-1,"");
+	}
+	
+	static int printNum(int len, int x, String out) {
+		out = String.valueOf(len - x);
+		if (x == 0) {
+			return len-x;
+		}
+		System.out.println(out);
+		return printNum(len, x--, out);
 	}
 
 //	public static void filter(String name, String guild, String jobClass) {
